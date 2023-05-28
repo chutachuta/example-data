@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>exam-data</title>
+
+    <style>
+        
+        body {
+        font-family: Arial, sans-serif;
+        }
+
+        .container {
+        max-width: 800px;
+        margin: 0 auto;
+        }
+
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        }
+
+        th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        }
+
+        th {
+        background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>exam-data.json</h1>
+        <div id="data-container"></div>
+    </div>
+
+    <script>
+
+        fetch('exam-data.json')
+        .then(response => response.json())
+        .then(data => {
+
+            const filteredProducts = data.filter(product => product.is_editable_price === false);
+
+            const tableHTML = `
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Total Weight</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    ${filteredProducts.map(product => `
+                        <tr>
+                        <td>${product.name}</td>
+                        <td>${product.weight}</td>
+                        </tr>
+                    `).join('')}
+                    </tbody>
+                </table>
+                `;
+
+                const dataContainer = document.getElementById('data-container');
+                dataContainer.innerHTML = tableHTML;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const dataContainer = document.getElementById('data-container');
+                dataContainer.innerHTML = 'Failed to fetch data.';
+            });
+    </script>
+
+
+</body>
+</html>
